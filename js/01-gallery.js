@@ -6,7 +6,7 @@ const refs = {
 
 refs.galleryRef.addEventListener('click', onClickGalleryItem);
 
-function addgaleryItemsMarkup(itemsArr) {
+function addGaleryItemsMarkup(itemsArr) {
 	return itemsArr
 		.map(({ original, preview, description }) => {
 			return `<div class="gallery__item"> <a class="gallery__link" href="${original}">
@@ -18,7 +18,7 @@ function addgaleryItemsMarkup(itemsArr) {
 
 refs.galleryRef.insertAdjacentHTML(
 	'beforeend',
-	addgaleryItemsMarkup(galleryItems)
+	addGaleryItemsMarkup(galleryItems)
 );
 
 function onClickGalleryItem(evt) {
@@ -26,16 +26,28 @@ function onClickGalleryItem(evt) {
 	if (evt.target.nodeName !== 'IMG') {
 		return;
 	}
-	const originalImgEl = basicLightbox.create(`
+	const originalImgEl = basicLightbox.create(
+		`
 	<div class="modal">
     	<img src="${evt.target.dataset.source}" width="1280">
-	</div>
-`);
+	</div>`,
+		{
+			onShow: instance => {
+				refs.galleryRef.addEventListener('keydown', onModalAddKeydown);
+			},
+			onClose: instance => {
+				refs.galleryRef.removeEventListener(
+					'keydown',
+					onModalAddKeydown
+				);
+			},
+		}
+	);
 	originalImgEl.show();
 
-	refs.galleryRef.addEventListener('keydown', evt => {
+	function onModalAddKeydown(evt) {
 		if (evt.code === 'Escape') {
 			originalImgEl.close();
 		}
-	});
+	}
 }

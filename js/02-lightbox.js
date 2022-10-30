@@ -12,19 +12,15 @@ function addgaleryItemsMarkup(itemsArr) {
 		.join('');
 }
 
-console.log(addgaleryItemsMarkup(galleryItems));
-
 refs.galleryRef.insertAdjacentHTML(
 	'beforeend',
 	addgaleryItemsMarkup(galleryItems)
 );
 
-const galerySimpleLightBox = new SimpleLightbox('.gallery a', {
+new SimpleLightbox('.gallery a', {
 	captionsData: 'alt',
 	loop: true,
-	captionDelay: 250,
-	animationSpeed: 250,
+	captionDelay: 300,
+	animationSpeed: 300,
 	animationSlide: true,
 });
-
-galerySimpleLightBox.show('show.simplelightbox', function () {});
